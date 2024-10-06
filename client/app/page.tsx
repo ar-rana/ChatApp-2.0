@@ -1,7 +1,6 @@
 "use client";
 
 import { useSocket } from "@/context/SocketProvider";
-import { send } from "node:process";
 import { useState } from "react";
 
 export default function Page() {
@@ -26,7 +25,7 @@ export default function Page() {
       <div>
         <div className="bg-black">
           {messages.map((msg, i) => (
-            <li key={i} >{msg}</li>
+            <li key={i}>{msg}</li>
           ))}
         </div>
       </div>

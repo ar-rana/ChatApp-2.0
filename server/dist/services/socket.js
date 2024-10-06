@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const socket_io_1 = require("socket.io");
 const ioredis_1 = __importDefault(require("ioredis"));
+const kafka_1 = require("./kafka");
 const pub = new ioredis_1.default({
     host: 'localhost',
     port: 6379,
@@ -48,12 +49,14 @@ class SocketService {
                 yield pub.publish('MESSAGES', JSON.stringify({ message }));
             }));
         });
-        sub.on('message', (channel, message) => {
+        sub.on('message', (channel, message) => __awaiter(this, void 0, void 0, function* () {
             if (channel === 'MESSAGES') {
                 console.log("New Message from redis: ", message);
                 io.emit("message", message);
+                (0, kafka_1.produceMessage)(message);
+                console.log("message produced to kafka broker...");
             }
-        });
+        }));
     }
     get io() {
         return this._io;
