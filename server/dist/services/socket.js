@@ -44,7 +44,7 @@ class SocketService {
         io.on('connect', (socket) => {
             console.log("New socket connected: ", socket.id);
             socket.on('event:message', (_a) => __awaiter(this, [_a], void 0, function* ({ message }) {
-                console.log("Message: ", message);
+                console.log("Message from client: ", message);
                 // publish to redis
                 yield pub.publish('MESSAGES', JSON.stringify({ message }));
             }));

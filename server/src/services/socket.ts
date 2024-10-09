@@ -1,6 +1,5 @@
 import { Server } from "socket.io";
 import Redis from 'ioredis';
-import prismaClient from "./prisma";
 import { produceMessage } from "./kafka";
 
 const pub = new Redis({
@@ -39,7 +38,7 @@ class SocketService {
       console.log("New socket connected: ", socket.id);
 
       socket.on('event:message', async({message} : {message : String}) => {
-        console.log("Message: ", message);
+        console.log("Message from client: ", message);
         // publish to redis
         await pub.publish('MESSAGES', JSON.stringify({message}));
       })

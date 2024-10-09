@@ -12,7 +12,15 @@ model Message {
   id String @id @default(uuid())
   text String
   from String @default("someone")
+  room String @default("all")
   createdAt DateTime @default(now()) @map("created_at")
 
   @@map("messages")
+}
+
+model rooms {
+  id String @id @default(uuid())
+  text String
+  type String @default("public")
+  author String @default("public")
 }
