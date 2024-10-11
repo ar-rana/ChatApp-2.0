@@ -11,13 +11,36 @@ export const options = {
   ],
 
   pages: {
-    signIn: "/api/signin",
+    signIn: "/api/auth/signin",
   },
 
   secret: process.env.NETXAUTH_SECRET,
 
   callbacks: {
     async session({ session } : any) {
+      const requestURI = "http://localhost:8000/authkey";
+      let key : String | null;
+
+      try {
+        const res = await fetch(requestURI, {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body : JSON.stringify({
+            user : session.user.email,
+          })
+        })
+        if (res) {
+          console.log("res", res);
+        }
+      } catch(e) {
+        key = null;
+      }
+      key = "hello";
+      session.user.authkey = key; 
+      
       return { ...session };
     },
   },

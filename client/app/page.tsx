@@ -63,7 +63,7 @@ export default function Page() {
               <Rooms />
             ) : (
               <button
-                onClick={() => router.push("/api/signin")}
+                onClick={() => router.push("/api/auth/signin")}
                 type="submit"
                 className="mx-20 bg-blue-500 text-white font-semibold p-2 rounded-full px-4"
               >
