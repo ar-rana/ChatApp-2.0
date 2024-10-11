@@ -20,7 +20,18 @@ model Message {
 
 model rooms {
   id String @id @default(uuid())
-  text String
+  name String
   type String @default("public")
   author String @default("public")
+
+  @@map("rooms")
+}
+
+
+model authKeys {
+  id Int @id @default(autoincrement())
+  key String @default(uuid())
+  email String @unique
+
+  @@map("authkeys")
 }

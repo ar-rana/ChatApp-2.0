@@ -17,7 +17,8 @@ export const options = {
   secret: process.env.NETXAUTH_SECRET,
 
   callbacks: {
-    async session({ session } : any) {
+    async session({ session, token } : any) {
+      console.log("token : ", token);
       const requestURI = "http://localhost:8000/authkey";
       let key : String | null;
 
