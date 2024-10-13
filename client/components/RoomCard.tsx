@@ -54,7 +54,7 @@ const RoomCard: React.FC<Props> = ({ name, id, author, onDelete }) => {
         <div>
           <p className="text-gray-600 mb-4">Id: {id}</p>
           <button
-            onClick={() => router.push(`/chat/${id}`)}
+            onClick={() => router.push(`/chat/${id}?name=${encodeURIComponent(name)}&type=${encodeURIComponent('public')}`)}
             className="mr-auto bg-blue-500 text-white font-normal lg:font-semibold md:font-semibold p-2 rounded-full px-4"
           >
             दोस्तों के साथ बातचीत करॆं

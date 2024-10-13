@@ -34,15 +34,20 @@ export async function startConsumer() {
         autoCommit: true,
         eachMessage: async ({message, pause}) => {
             if (!message.value) return;
-            console.log("New Message Receied...");
+            console.log("message at consumer: ", message.value.toString());
+            const parsedMessage = JSON.parse(message.value.toString());
+            const messageToDB = JSON.parse(parsedMessage.message);
+            console.log("message to DB: ", messageToDB);
             try {
                 await prismaClient.message.create({
                     data: {
-                        text: message.value?.toString(),
+                        text: messageToDB.text,
+                        room: messageToDB.room,
+                        from: messageToDB.from,
                     },
                 });
             } catch (e) {
-                console.log("Something is wronge...");
+                console.log("Something is wronge...", e);
                 pause();
                 setTimeout(()=>{ consumer.resume([{topic: "MESSAGES"}])}, 60*1000)
             }

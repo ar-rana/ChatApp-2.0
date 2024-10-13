@@ -37,6 +37,24 @@ app.get("/rooms", async (req,res) => {
     }
 })
 
+//integrated
+app.put("/messages", async (req,res) => {
+    const roomid = req.body.roomid;
+    try {
+        const messages = await prismaClient.message.findMany({
+            where: {
+                room: roomid,
+            },
+            orderBy: {
+                createdAt: 'desc'
+            }
+        })
+        res.send(messages);
+    } catch (e) {
+        res.sendStatus(400);
+    }
+})
+
 //tested, integrated
 app.put("/room", async (req,res) => {
     const author = req.body.author;
@@ -98,6 +116,7 @@ app.post("/create/room", async (req,res) => {
         res.sendStatus(400);
     }
 })
+
 //tested
 app.put("/authkey", async (req,res) => {
     const user = req.body.user;

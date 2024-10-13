@@ -46,6 +46,24 @@ app.get("/rooms", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.sendStatus(400);
     }
 }));
+//integrated
+app.put("/messages", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const roomid = req.body.roomid;
+    try {
+        const messages = yield prisma_1.default.message.findMany({
+            where: {
+                room: roomid,
+            },
+            orderBy: {
+                createdAt: 'desc'
+            }
+        });
+        res.send(messages);
+    }
+    catch (e) {
+        res.sendStatus(400);
+    }
+}));
 //tested, integrated
 app.put("/room", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const author = req.body.author;

@@ -50,19 +50,23 @@ function startConsumer() {
         yield consumer.run({
             autoCommit: true,
             eachMessage: (_a) => __awaiter(this, [_a], void 0, function* ({ message, pause }) {
-                var _b;
                 if (!message.value)
                     return;
-                console.log("New Message Receied...");
+                console.log("message at consumer: ", message.value.toString());
+                const parsedMessage = JSON.parse(message.value.toString());
+                const messageToDB = JSON.parse(parsedMessage.message);
+                console.log("message to DB: ", messageToDB);
                 try {
                     yield prisma_1.default.message.create({
                         data: {
-                            text: (_b = message.value) === null || _b === void 0 ? void 0 : _b.toString(),
+                            text: messageToDB.text,
+                            room: messageToDB.room,
+                            from: messageToDB.from,
                         },
                     });
                 }
                 catch (e) {
-                    console.log("Something is wronge...");
+                    console.log("Something is wronge...", e);
                     pause();
                     setTimeout(() => { consumer.resume([{ topic: "MESSAGES" }]); }, 60 * 1000);
                 }

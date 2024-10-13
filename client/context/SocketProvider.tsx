@@ -38,7 +38,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     console.log("From server message received: ", msg);
     const { message } = JSON.parse(msg) as { message: string };
     console.log(message);
-    setMessages((prevMsg) => [...prevMsg, message]);
+    setMessages((prevMsg) => [message, ...prevMsg]);
   }, []);
 
   useEffect(() => {
