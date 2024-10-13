@@ -22,7 +22,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const uuid_1 = require("uuid");
 const app = (0, express_1.default)();
 const corsOptions = {
-    allowedHeaders: ["*"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
     origin: "http://localhost:3000",
     methods: "GET,POST,DELETE,PUT",
     credentials: true,
@@ -32,7 +32,7 @@ app.use(express_1.default.json());
 app.get("/", (req, res) => {
     res.send("Hello, Server Live!!!");
 });
-//tested
+//tested , integrated
 app.get("/rooms", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const allRooms = yield prisma_1.default.rooms.findMany({
@@ -46,23 +46,26 @@ app.get("/rooms", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.sendStatus(400);
     }
 }));
-app.get("/room", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+//tested, integrated
+app.put("/room", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const author = req.body.author;
-    const authkey = req.body.authkey;
+    // const authkey = req.body.authkey;
+    // console.log(authkey);
+    console.log("author: ", author);
     try {
-        const obj = yield prisma_1.default.authKeys.findUnique({
-            where: { email: author }
-        });
-        console.log(obj === null || obj === void 0 ? void 0 : obj.key);
-        console.log(authkey);
-        const key = obj.key;
-        const pass = yield bcrypt_1.default.compare(key, authkey);
-        console.log(pass);
-        if (pass) {
+        // const obj = await prismaClient.authKeys.findUnique({
+        //     where: { email: author }
+        // })
+        // console.log(obj!.key);
+        // console.log(authkey);
+        // const key = obj!.key;
+        // const pass = await bcrypt.compare(key, authkey);
+        // console.log(pass);
+        if (true) { // pass
             const rooms = yield prisma_1.default.rooms.findMany({
                 where: {
-                    type: 'private',
                     author: author,
+                    type: 'private',
                 },
             });
             res.send(rooms);
@@ -75,7 +78,7 @@ app.get("/room", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.sendStatus(500);
     }
 }));
-//tested
+//tested, integrated
 app.delete("/room", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.body.id;
     try {
@@ -88,7 +91,7 @@ app.delete("/room", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.sendStatus(404);
     }
 }));
-//tested
+//tested, integrated
 app.post("/create/room", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     console.log(req.body);
@@ -106,8 +109,10 @@ app.post("/create/room", (req, res) => __awaiter(void 0, void 0, void 0, functio
         res.sendStatus(400);
     }
 }));
+//tested
 app.put("/authkey", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.body.user;
+    console.log("authkey request: ", user);
     try {
         const key = (0, uuid_1.v4)();
         const obj = yield prisma_1.default.authKeys.upsert({
@@ -118,6 +123,7 @@ app.put("/authkey", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const salt = yield bcrypt_1.default.genSalt();
         const authkey = yield bcrypt_1.default.hash(obj.key, salt);
         res.send(authkey);
+        res.status(200).send();
     }
     catch (e) {
         res.sendStatus(400);

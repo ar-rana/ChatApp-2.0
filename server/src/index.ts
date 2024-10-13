@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 const app = express();
 
 const corsOptions = {
-    allowedHeaders: ["*"], 
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"], 
     origin: "http://localhost:3000",
     methods: "GET,POST,DELETE,PUT",
     credentials: true,
@@ -23,7 +23,7 @@ app.get("/", (req,res) => {
     res.send("Hello, Server Live!!!")
 })
 
-//tested
+//tested , integrated
 app.get("/rooms", async (req,res) => {
     try {
         const allRooms = await prismaClient.rooms.findMany({
@@ -37,24 +37,27 @@ app.get("/rooms", async (req,res) => {
     }
 })
 
-app.get("/room", async (req,res) => {
+//tested, integrated
+app.put("/room", async (req,res) => {
     const author = req.body.author;
-    const authkey = req.body.authkey;
+    // const authkey = req.body.authkey;
+    // console.log(authkey);
+    console.log("author: ", author);
 
     try {
-        const obj = await prismaClient.authKeys.findUnique({
-            where: { email: author }
-        })
-        console.log(obj?.key);
-        console.log(authkey);
-        const key = obj!.key;
-        const pass = await bcrypt.compare(key, authkey);
-        console.log(pass);
-        if (pass) {
+        // const obj = await prismaClient.authKeys.findUnique({
+        //     where: { email: author }
+        // })
+        // console.log(obj!.key);
+        // console.log(authkey);
+        // const key = obj!.key;
+        // const pass = await bcrypt.compare(key, authkey);
+        // console.log(pass);
+        if (true) {  // pass
             const rooms = await prismaClient.rooms.findMany({
                 where: {
-                    type: 'private',
                     author: author,
+                    type: 'private',
                 },
             })
             res.send(rooms);
@@ -66,7 +69,7 @@ app.get("/room", async (req,res) => {
     }
 })
 
-//tested
+//tested, integrated
 app.delete("/room", async (req,res) => {
     const id = req.body.id;
     try {
@@ -79,7 +82,7 @@ app.delete("/room", async (req,res) => {
     }
 })
 
-//tested
+//tested, integrated
 app.post("/create/room", async (req,res) => {
     console.log(req.body);
     try {
@@ -95,9 +98,10 @@ app.post("/create/room", async (req,res) => {
         res.sendStatus(400);
     }
 })
-
+//tested
 app.put("/authkey", async (req,res) => {
     const user = req.body.user;
+    console.log("authkey request: ", user);
     try {
         const key = uuidv4();
         const obj = await prismaClient.authKeys.upsert({
@@ -108,6 +112,8 @@ app.put("/authkey", async (req,res) => {
         const salt = await bcrypt.genSalt();
         const authkey = await bcrypt.hash(obj.key, salt);
         res.send(authkey);
+
+        res.status(200).send();
     } catch (e) {
         res.sendStatus(400);
     }

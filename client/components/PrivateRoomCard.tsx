@@ -9,7 +9,7 @@ interface Props {
   onDelete: (id : string) => void;
 }
 
-const RoomCard: React.FC<Props> = ({ name, id, author, onDelete }) => {
+const PrivateRoomCard: React.FC<Props> = ({ name, id, author, onDelete }) => {
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -36,7 +36,7 @@ const RoomCard: React.FC<Props> = ({ name, id, author, onDelete }) => {
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+    <div className="bg-green-300 border border-black rounded-lg overflow-hidden shadow-sm">
       <div className="flex flex-col p-4">
         <div className="flex space-x-3 items-center">
           <h3 className="text-xl font-semibold text-gray-800 mb-2 truncate">{name}</h3>
@@ -52,7 +52,7 @@ const RoomCard: React.FC<Props> = ({ name, id, author, onDelete }) => {
           )}
         </div>
         <div>
-          <p className="text-gray-600 mb-4">Id: {id}</p>
+          <p className="text-gray-600 mb-4 truncate">Private Room</p>
           <button
             onClick={() => router.push(`/chat/${id}`)}
             className="mr-auto bg-blue-500 text-white font-normal lg:font-semibold md:font-semibold p-2 rounded-full px-4"
@@ -65,4 +65,4 @@ const RoomCard: React.FC<Props> = ({ name, id, author, onDelete }) => {
   );
 };
 
-export default RoomCard;
+export default PrivateRoomCard;
