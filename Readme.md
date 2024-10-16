@@ -26,7 +26,7 @@ ChatApp-2.0 is a real-time chat application built with modern technologies to de
 - **Docker**: Containers for Redis, Kafka, and Zookeeper.
 
 ## Architecture
-![image](https://github.com/user-attachments/assets/d27d0c42-8702-48b0-a11c-5b87c91c145d)
+![image](https://github.com/user-attachments/assets/a365307b-0284-4f4d-8bdc-cec347a18171)
 
 ## Prerequisites to Run on local Machine
 
