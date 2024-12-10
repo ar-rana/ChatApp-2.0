@@ -74,3 +74,8 @@ npm run dev
 ```bash
 npm run dev
 ```
+
+---
+
+## What I Learned 🙂
+During this project I learned to integrate a pub-sub model and a messaging queue using redis and kafka, and implimented real time messaging using websockets and created a scalable chat app. During this project I also learned typescript and how to impliment OAuth in NextJs. 
